@@ -1,0 +1,32 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Szczegóły o produkcie";
+}
+
+<h1>@Model.Name</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="product-detail-container">
+            <img src="@Model.ImageUrl" alt="@Model.Name" class="product-detail-img" onerror="this.src='/images/placeholder.png';" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h4>Cena: <span class="fw-bold">@Model.Price.ToString("C")</span></h4>
+        <p><strong>Kategoria:</strong> @Model.Category</p>
+        <p><strong>Ilość w magazynie:</strong> @Model.Stock</p>
+        <p><strong>Opis:</strong></p>
+        <p>@Model.Description</p>
+
+        <p>
+            <a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
+            @* only for ADMIN *@
+            @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary ms-2">Edytuj</a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger ms-2">Usuń</a>
+            }
+        </p>
+    </div>
+</div>

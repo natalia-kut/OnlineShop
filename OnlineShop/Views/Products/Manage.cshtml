@@ -1,0 +1,40 @@
+@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Zarz¹dzaj produktami";
+}
+
+<h1>Zarz¹dzaj produktami</h1>
+
+<p>
+    <a asp-action="Dodaj">Dodaj nowy produkt</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.First().Name)</th>
+            <th>@Html.DisplayNameFor(m => m.First().Description)</th>
+            <th>@Html.DisplayNameFor(m => m.First().Price)</th>
+            <th>@Html.DisplayNameFor(m => m.First().Category)</th>
+            <th>@Html.DisplayNameFor(m => m.First().Stock)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+            <td>@Html.DisplayFor(modelItem => item.Price)</td>
+            <td>@Html.DisplayFor(modelItem => item.Category)</td>
+            <td>@Html.DisplayFor(modelItem => item.Stock)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Usuñ</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Szczegó³y</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
