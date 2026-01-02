@@ -59,3 +59,78 @@ body {
   display: block;
   margin-bottom: 1rem;
 }
+
+.hero-section {
+    background: linear-gradient(90deg, #000000 0%, #5C3A21 100%);
+    color: #ffffff;
+}
+
+.btn-primary {
+    background-color: #5C3A21;
+    border-color: #5C3A21;
+    color: #fff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #442912;
+    border-color: #442912;
+    color: #fff;
+}
+
+.btn-light {
+    background-color: rgba(255,255,255,0.08);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.btn-outline-light {
+    color: #fff;
+    border-color: rgba(255,255,255,0.18);
+}
+
+.btn-outline-light:hover {
+    background-color: rgba(255,255,255,0.06);
+}
+
+.card {
+    background-color: #0f0f0f;
+    color: #fff;
+    border: 1px solid #222;
+}
+
+.card .card-title {
+    color: #e6d6c5; 
+}
+
+.navbar, footer.footer {
+    background-color: #000;
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .nav-link.text-dark {
+    color: #caa77a !important;
+}
+
+.navbar .nav-link:hover,
+.navbar .navbar-brand:hover {
+    color: #e6d6c5 !important;
+}
+
+a, .nav-link {
+    color: #caa77a;
+}
+
+a:hover, .nav-link:hover {
+    color: #e6d6c5;
+}
+
+.lead, .card-text {
+    color: #d9d1c7;
+}
+
+/* Opcjonalne t³o strony */
+/* body {
+  background-color: #000;
+} */

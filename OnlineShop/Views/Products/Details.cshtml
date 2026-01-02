@@ -1,4 +1,5 @@
-﻿@model Product
+﻿@using Azure.Core
+@model Product
 
 @{
     ViewData["Title"] = "Szczegóły o produkcie";
@@ -19,8 +20,31 @@
         <p><strong>Opis:</strong></p>
         <p>@Model.Description</p>
 
+        @if (TempData["CartError"] != null)
+        {
+            <div class="alert alert-danger">@TempData["CartError"]</div>
+        }
+
         <p>
             <a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
+
+            @if (Model.Stock > 0)
+            {
+                <form asp-controller="Cart" asp-action="Add" method="post" class="d-inline-flex align-items-center ms-2 flex-nowrap">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <input type="hidden" name="returnUrl" value="@($"{Context.Request.Path}{Context.Request.QueryString}")" />
+                    <div class="input-group me-2" style="width:110px; min-width:90px;">
+                        <input type="number" name="quantity" class="form-control text-center" min="1" max="@Model.Stock" value="1" aria-label="Ilość" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Dodaj do koszyka</button>
+                </form>
+            }
+            else
+            {
+                <button class="btn btn-secondary ms-2" disabled>Brak w magazynie</button>
+            }
+
             @* only for ADMIN *@
             @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
             {
@@ -30,3 +54,5 @@
         </p>
     </div>
 </div>
+
+

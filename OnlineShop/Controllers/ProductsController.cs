@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using OnlineShop.Models;
 
 namespace OnlineShop.Controllers
 {
@@ -18,9 +19,32 @@ namespace OnlineShop.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? category)
         {
-            return View(await _context.Products.ToListAsync());
+            var categories = await _context.Products
+                .Select(p => p.Category)
+                .Where(c => c != null)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToListAsync();
+
+            var productsQuery = _context.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                productsQuery = productsQuery.Where(p => p.Category == category);
+            }
+
+            var products = await productsQuery.ToListAsync();
+
+            var vm = new ProductCategoriesViewModel
+            {
+                Products = products,
+                Categories = categories,
+                SelectedCategory = category
+            };
+
+            return View(vm);
         }
 
         // GET: Products/Manage
@@ -67,10 +91,10 @@ namespace OnlineShop.Controllers
                 }
             }
 
-            if (product.Price < 0.01m || product.Price > 100000m)
-            {
-                ModelState.AddModelError("Price", "Cena musi być w zakresie 0.01 – 100000.0");
-            }
+            //if (product.Price < 0.01m || product.Price > 100000m)
+            //{
+            //    ModelState.AddModelError("Price", "Cena musi być w zakresie 0.01 – 100000.0");
+            //}
 
             ModelState.Remove("imageFile");
 

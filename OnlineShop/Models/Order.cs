@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 public class Order
 {
     public int Id { get; set; }
-
+    [Display(Name = "Data zamówienia")]
     public DateTime OrderDate { get; set; } = DateTime.Now;
 
     [Required]
@@ -15,8 +13,8 @@ public class Order
     [Required]
     [StringLength(30)]
     public required string Status { get; set; }
-
+    [Display(Name = "Kwota całkowita")] 
     public decimal TotalPrice { get; set; }
 
-    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    public List<OrderItem> OrderItems { get; set; } = new();
 }

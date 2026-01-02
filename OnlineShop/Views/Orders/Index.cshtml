@@ -1,0 +1,54 @@
+@model List<Order>
+
+@{
+    ViewData["Title"] = "Zamówienia";
+    var showUserColumn = User.IsInRole("Admin");
+}
+
+<h1>Zamówienia</h1>
+
+@if (!Model.Any())
+{
+    <p>Brak zamówieñ.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                @if (showUserColumn)
+                {
+                    <th>U¿ytkownik</th>
+                }
+                <th>Data</th>
+                <th>Status</th>
+                <th>Razem</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var o in Model)
+            {
+                <tr>
+                    <td>@o.Id</td>
+                    @if (showUserColumn)
+                    {
+                        <td>@(o.User?.FirstName ?? o.UserId)</td>
+                    }
+                    <td>@o.OrderDate.ToString("g")</td>
+                    <td>@o.Status</td>
+                    <td>@String.Format("{0:C}", o.TotalPrice)</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@o.Id" class="btn btn-sm btn-outline-primary">Szczegó³y</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@o.Id" class="btn btn-sm btn-outline-secondary ms-1">Edytuj</a>
+                            <a asp-action="Delete" asp-route-id="@o.Id" class="btn btn-sm btn-outline-danger ms-1">Usuñ</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

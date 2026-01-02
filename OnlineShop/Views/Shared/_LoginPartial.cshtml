@@ -7,13 +7,30 @@
 @if (SignInManager.IsSignedIn(User))
 {
     var currentUser = await UserManager.GetUserAsync(User);
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Witaj @( !string.IsNullOrWhiteSpace(currentUser?.FirstName) ? currentUser.FirstName : UserManager.GetUserName(User) )!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-dark" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Witaj @( !string.IsNullOrWhiteSpace(currentUser?.FirstName) ? currentUser.FirstName : UserManager.GetUserName(User) )!
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+            <li>
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Zarządzaj kontem</a>
+            </li>
+            <li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="dropdown-item" asp-controller="Orders" asp-action="Index">Zarządzaj zamówieniami</a>
+                    }
+                    else {
+                    <a class="dropdown-item" asp-controller="Orders" asp-action="Index">Twoje zamówienia</a>
+                    }
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+                <form id="logoutForm" class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                    <button type="submit" class="dropdown-item">Wyloguj</button>
+                </form>
+            </li>
+        </ul>
     </li>
 }
 else

@@ -2,11 +2,11 @@
     ViewData["Title"] = "OnlineShop — Moda męska";
 }
 
-<section class="py-5 text-white" style="background: linear-gradient(90deg,#1b6ec2 0%,#1861ac 100%);">
+<section class="py-5 text-white hero-section">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-7">
-                <h1 class="display-4 fw-bold">Moda męska — styl i wygoda</h1>
+                <h1 class="display-4 fw-bold">Męska moda — styl i wygoda</h1>
                 <p class="lead">Nowa kolekcja — klasyczne koszule, casualowe swetry i eleganckie dodatki. Zobacz najlepsze propozycje dla pewnego siebie mężczyzny.</p>
                 <p>
                     <a class="btn btn-light btn-lg me-2" asp-controller="Products" asp-action="Index">Przeglądaj produkty</a>
@@ -32,7 +32,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Koszule</h5>
                     <p class="card-text">Eleganckie i casualowe koszule — idealne na co dzień i na specjalne okazje.</p>
-                    <a asp-controller="Products" asp-action="Index" class="btn btn-primary">Zobacz koszule</a>
+                    <a asp-controller="Products" asp-action="Index" asp-route-category="Koszule" class="btn btn-primary">Zobacz koszule</a>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Swetry</h5>
                     <p class="card-text">Ciepłe i stylowe swetry na chłodniejsze dni.</p>
-                    <a asp-controller="Products" asp-action="Index" class="btn btn-primary">Zobacz swetry</a>
+                    <a asp-controller="Products" asp-action="Index" asp-route-category="Swetry" class="btn btn-primary">Zobacz swetry</a>
                 </div>
             </div>
         </div>
@@ -54,7 +54,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Dodatki</h5>
                     <p class="card-text">Paski, zegarki i inne detale, które dopełnią Twój look.</p>
-                    <a asp-controller="Products" asp-action="Index" class="btn btn-primary">Zobacz dodatki</a>
+                    <a asp-controller="Products" asp-action="Index" asp-route-category="Dodatki" class="btn btn-primary">Zobacz dodatki</a>
                 </div>
             </div>
         </div>

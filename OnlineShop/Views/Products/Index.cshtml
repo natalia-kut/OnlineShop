@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model ProductCategoriesViewModel
 
 @{
     ViewData["Title"] = "Dostępne artykuły";
@@ -6,8 +6,36 @@
 
 <h1>Dostępne artykuły</h1>
 
+<div class="mb-3 d-flex align-items-center">
+    <form method="get" asp-action="Index" class="d-flex align-items-center">
+        <label class="me-2 mb-0">Kategoria:</label>
+        <select name="category" class="form-select me-2" style="width:220px;">
+            <option value="">Wszystkie</option>
+            @foreach (var cat in Model.Categories)
+            {
+                if (cat == Model.SelectedCategory)
+                {
+                    <option value="@cat" selected>@cat</option>
+                }
+                else
+                {
+                    <option value="@cat">@cat</option>
+                }
+            }
+        </select>
+        <button type="submit" class="btn btn-outline-primary">Filtruj</button>
+    </form>
+
+    @if (!string.IsNullOrEmpty(Model.SelectedCategory))
+    {
+        <div class="ms-3">
+            <a asp-action="Index" class="btn btn-link">Wyczyść filtr</a>
+        </div>
+    }
+</div>
+
 <div class="row">
-@foreach (var item in Model)
+@foreach (var item in Model.Products)
 {
     <div class="col-md-4 mb-4">
         <div class="card h-100">
