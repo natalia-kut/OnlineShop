@@ -26,7 +26,6 @@
         }
 
         <p>
-            <a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
 
             @if (Model.Stock > 0)
             {
@@ -51,6 +50,8 @@
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary ms-2">Edytuj</a>
                 <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger ms-2">Usuń</a>
             }
+            <a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
+
         </p>
     </div>
 </div>

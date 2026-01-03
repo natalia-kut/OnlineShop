@@ -8,6 +8,8 @@ public class Order
 
     [Required]
     public required string UserId { get; set; }
+
+    [Display(Name = "Użytkownik")]
     public required ApplicationUser User { get; set; }
 
     [Required]

@@ -15,6 +15,7 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th> </th>
                 <th>Produkt</th>
                 <th>Iloœæ</th>
                 <th>Cena jednostkowa</th>
@@ -26,7 +27,17 @@ else
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@(item.Product?.Name ?? ("Produkt #" + item.ProductId))</td>
+                    <td style="width:90px;">
+                        <img src="@(item.Product?.ImageUrl ?? "/images/placeholder.png")"
+                             alt="@(item.Product?.Name ?? $"Produkt #{item.ProductId}")"
+                             class="img-fluid rounded"
+                             style="width:80px;height:80px;object-fit:cover;" />
+                    </td>
+                    <td>
+                        @(item.Product != null
+                            ? (Html.ActionLink(item.Product.Name, "Details", "Products", new { id = item.ProductId }, null))
+                            : ("Produkt #" + item.ProductId))
+                    </td>
                     <td>@item.Quantity</td>
                     <td>@item.UnitPrice.ToString("C")</td>
                     <td>@((item.UnitPrice * item.Quantity).ToString("C"))</td>
@@ -43,8 +54,56 @@ else
 
     <div class="d-flex justify-content-between align-items-center">
         <h4>Razem: @ViewBag.Total.ToString("C")</h4>
-        <form asp-controller="Cart" asp-action="Checkout" method="post" class="m-0">
-            <button class="btn btn-success">Z³ó¿ zamówienie</button>
+
+        <form id="checkoutForm" asp-controller="Cart" asp-action="Checkout" method="post" class="m-0">
+            @Html.AntiForgeryToken()
+            <button id="checkoutBtn" type="button" class="btn btn-success">Z³ó¿ zamówienie</button>
         </form>
     </div>
+}
+
+<div class="modal fade" id="confirmCheckoutModal" tabindex="-1" aria-labelledby="confirmCheckoutLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmCheckoutLabel">Potwierdzenie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+            </div>
+            <div class="modal-body">
+                Czy na pewno chcesz z³o¿yæ zamówienie? Po zatwierdzeniu nie bêdzie mo¿na edytowaæ koszyka.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <button id="confirmCheckoutBtn" type="button" class="btn btn-primary">Tak, chcê z³o¿yæ zamówienie</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            var checkoutBtn = document.getElementById('checkoutBtn');
+            var confirmBtn = document.getElementById('confirmCheckoutBtn');
+            var checkoutForm = document.getElementById('checkoutForm');
+
+            if (!checkoutBtn || !confirmBtn || !checkoutForm) return;
+
+            checkoutBtn.addEventListener('click', function (e) {
+                var modalEl = document.getElementById('confirmCheckoutModal');
+                if (window.bootstrap && modalEl) {
+                    var modal = new bootstrap.Modal(modalEl);
+                    modal.show();
+                } else {
+                    if (confirm('Czy na pewno chcesz z³o¿yæ zamówienie?')) {
+                        checkoutForm.submit();
+                    }
+                }
+            });
+
+            confirmBtn.addEventListener('click', function () {
+                checkoutForm.submit();
+            });
+        })();
+    </script>
 }

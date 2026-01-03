@@ -107,7 +107,12 @@ namespace OnlineShop.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl) && !returnUrl.Contains("/Cart/Checkout", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
+
+                    return LocalRedirect("~/");
                 }
                 if (result.RequiresTwoFactor)
                 {

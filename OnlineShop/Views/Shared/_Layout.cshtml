@@ -33,7 +33,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li> *@
                         <li>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Moda męska</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Kolekcja męska</a>
                         </li>
                         @* only for ADMIN *@
                         @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
