@@ -131,7 +131,7 @@ namespace OnlineShop.Controllers
                                 Quantity = pItem.Quantity,
                                 UnitPrice = pItem.UnitPrice,
                                 Order = order,
-                                Product = products.TryGetValue(pItem.ProductId, out var prod) ? prod : null!,
+                                Product = products.TryGetValue((int)pItem.ProductId, out var prod) ? prod : null!,
                                 Notes = pItem.Notes
                             };
                             _db.OrderItems.Add(newOi);

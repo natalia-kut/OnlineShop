@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.IO;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using OnlineShop.Models;
@@ -216,24 +219,44 @@ namespace OnlineShop.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                if (!string.IsNullOrEmpty(product.ImageUrl) && product.ImageUrl.StartsWith("/images/products/", StringComparison.OrdinalIgnoreCase))
-                {
-                    var path = Path.Combine(_env.WebRootPath, product.ImageUrl.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
-                    if (System.IO.File.Exists(path))
-                    {
-                        System.IO.File.Delete(path);
-                    }
-                }
+            if (product == null)
+                return NotFound();
 
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
+            var imageUrl = product.ImageUrl;
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+            if (string.IsNullOrWhiteSpace(imageUrl) ||
+                imageUrl.StartsWith("http://", System.StringComparison.OrdinalIgnoreCase) ||
+                imageUrl.StartsWith("https://", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction(nameof(Index));
             }
+
+            var imageStillUsed = await _context.Products.AnyAsync(p => p.ImageUrl == imageUrl)
+                              || await _context.OrderItems.AnyAsync(oi => oi.ProductImageUrl == imageUrl);
+
+            if (imageStillUsed)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                var relativePath = imageUrl.TrimStart('/', '\\');
+                var physicalPath = Path.Combine(_env.WebRootPath, relativePath);
+
+                if (System.IO.File.Exists(physicalPath))
+                {
+                    System.IO.File.Delete(physicalPath);
+                }
+            }
+            catch { }
+
             return RedirectToAction(nameof(Index));
         }
 

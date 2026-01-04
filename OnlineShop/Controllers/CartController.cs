@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using OnlineShop.Models;
 
 namespace OnlineShop.Controllers
 {
@@ -105,6 +106,8 @@ namespace OnlineShop.Controllers
                             Order = order,
                             ProductId = ci.ProductId,
                             Product = product,
+                            ProductName = product.Name,
+                            ProductImageUrl = product.ImageUrl,
                             Quantity = ci.Quantity,
                             UnitPrice = ci.UnitPrice
                         };

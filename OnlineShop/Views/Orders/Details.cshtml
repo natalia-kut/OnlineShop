@@ -59,7 +59,10 @@ else
             {
                 <tr>
                     <td style="width:90px;">
-                        <img src="@(it.Product?.ImageUrl ?? "/images/placeholder.png")" alt="@(it.Product?.Name ?? $" Produkt #{it.ProductId}")" class="img-fluid rounded" style="width:80px;height:80px;object-fit:cover;" />
+                        <img src="@(it.Product?.ImageUrl ?? it.ProductImageUrl ?? "/images/placeholder.png")"
+                             alt="@(it.Product?.Name ?? (string.IsNullOrEmpty(it.ProductName) ? $"Produkt #{it.ProductId}" : it.ProductName))"
+                             class="img-fluid rounded"
+                             style="width:80px;height:80px;object-fit:cover;" />
                     </td>
                     <td>
                         @if (it.Product != null)
@@ -68,7 +71,7 @@ else
                         }
                         else
                         {
-                            @($"Produkt #{it.ProductId}")
+                            @(string.IsNullOrEmpty(it.ProductName) ? $"Produkt #{it.ProductId}" : it.ProductName)
                         }
                     </td>
                     <td>@it.Quantity</td>

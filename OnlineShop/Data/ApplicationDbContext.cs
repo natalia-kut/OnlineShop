@@ -47,5 +47,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         builder.Entity<Cart>()
             .HasIndex(c => c.UserId);
+
+        builder.Entity<OrderItem>()
+            .HasOne(oi => oi.Product)
+            .WithMany(p => p.OrderItems)
+            .HasForeignKey(oi => oi.ProductId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
