@@ -83,6 +83,21 @@ namespace OnlineShop.Controllers
         {
             if (id != posted.Id) return NotFound();
 
+            if (!ModelState.IsValid)
+            {
+                var postedItems = posted.OrderItems ?? new List<OrderItem>();
+                var productIds = postedItems.Select(pi => pi.ProductId).Where(pid => pid != 0).Distinct().ToList();
+                if (productIds.Any())
+                {
+                    var products = await _db.Products.Where(p => productIds.Contains(p.Id)).ToListAsync();
+                    foreach (var item in postedItems)
+                    {
+                        item.Product = products.FirstOrDefault(p => p.Id == item.ProductId);
+                    }
+                }
+                return View(posted);
+            }
+
             var order = await _db.Orders
                 .Include(o => o.OrderItems)
                 .FirstOrDefaultAsync(o => o.Id == id);
