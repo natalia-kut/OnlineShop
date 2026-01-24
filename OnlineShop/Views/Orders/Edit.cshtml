@@ -6,13 +6,14 @@
 
 <h1>Edytuj zamówienie nr @Model.Id</h1>
 
-@* <h4>Order</h4> *@
 <hr />
 <div class="row">
     <div class="col-md-8">
         <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="OrderDate" />
 
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
@@ -36,6 +37,7 @@
                         {
                             <tr>
                                 <input asp-for="OrderItems[i].Id" type="hidden" />
+                                <input asp-for="OrderItems[i].OrderId" type="hidden" />
                                 <input asp-for="OrderItems[i].ProductId" type="hidden" />
 
                                 <td>@(Model.OrderItems[i].Product?.Name ?? "—")</td>
@@ -50,7 +52,7 @@
                                     <span asp-validation-for="OrderItems[i].UnitPrice" class="text-danger"></span>
                                 </td>
                                 <td>
-                                    <input asp-for="OrderItems[i].Notes" class="form-control" type="string" />
+                                    <input asp-for="OrderItems[i].Notes" class="form-control" />
                                     <span asp-validation-for="OrderItems[i].Notes" class="text-danger"></span>
                                 </td>
                             </tr>
@@ -60,14 +62,14 @@
             }
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Powrót do listy</a>
 </div>
 
 @section Scripts {

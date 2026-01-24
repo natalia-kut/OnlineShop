@@ -10,7 +10,7 @@ public class Order
     public required string UserId { get; set; }
 
     [Display(Name = "Użytkownik")]
-    public required ApplicationUser User { get; set; }
+    public ApplicationUser? User { get; set; }
 
     [Required]
     [StringLength(30)]
